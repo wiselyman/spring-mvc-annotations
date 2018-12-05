@@ -11,7 +11,7 @@
 
 将当前类注册为`Spring MVC`的REST控制器，它组合类一个`@ResponseBody`。
 
-```java
+``` java
 @RestController
 public class PersonRestController {
     
@@ -22,23 +22,25 @@ public class PersonRestController {
 
 通用的路径到MVC方法的映射，可注解在类上或方法上，支持`GET` `POST` `PUT` `DELETE` `PATCH`，我们平常应该使用专用的注解，`@RequestMapping`放置在类一级。
 
-```java
+``` java
 @RestController
 @RequestMapping("/people")
 public class PersonRestController {
     
 }
 
+
 ### 4. `@PathVariable`
 
 可以在请求路径中获取变量。
 
-```java
+``` java
    
 @GetMapping("/{id}")
 public void get(@PathVariable Long id){
     log.info("--------" + id + "--------");
 }
+
 ```
 
 访问路径为：`http://localhost/people/1`
@@ -48,7 +50,7 @@ public void get(@PathVariable Long id){
 
 获取请求参数。
 
-```java
+``` java
 @GetMapping("/findByName")
 public void findByName(@RequestParam String name){
     log.info("--------" + name + "--------");
@@ -63,7 +65,7 @@ public void findByName(@RequestParam String name){
 
 获取`请求头`的信息。
 
-```java
+``` java
 @GetMapping("/headerInfo")
 public void header(@RequestHeader("User-Agent") String userAgent){
     log.info("--------" + userAgent + "--------");
@@ -75,7 +77,7 @@ public void header(@RequestHeader("User-Agent") String userAgent){
 
 获取客户端的cookie中的信息。
 
-```java
+``` java
 @GetMapping("/getCookieValue")
 public void getCookieValue(@CookieValue("tz") String timeZone){
     log.info("--------" + timeZone + "--------");
@@ -88,7 +90,7 @@ public void getCookieValue(@CookieValue("tz") String timeZone){
 
 从`请求体`中获取数据。
 
-```java
+``` java
 @PostMapping
 public void save(@RequestBody Person person){
     log.info("--------" + person + "--------");
@@ -105,7 +107,7 @@ public void save(@RequestBody Person person){
 
 映射`Http`的`GET`方法，获取信息。
 
-```java
+``` java
 @GetMapping("/{id}")
 public void get(@PathVariable Long id){}
 
@@ -115,7 +117,7 @@ public void get(@PathVariable Long id){}
 
 映射`Http`的`POST`方法，保存信息。
 
-```java
+``` java
 PostMapping
 public void save(@RequestBody Person person){}
 
@@ -125,7 +127,7 @@ public void save(@RequestBody Person person){}
 
 映射`Http`的`PUT`方法，更新信息。
 
-```java
+``` java
 @PutMapping("/{id}")
 public void update(@PathVariable Long id , @RequestBody Person person){}
 
@@ -136,7 +138,7 @@ public void update(@PathVariable Long id , @RequestBody Person person){}
 映射`Http`的`DELETE`方法，删除信息。
 
 
-```java
+``` java
 @DeleteMapping("/{id}")
 public void remove(@PathVariable Long id){}
 
@@ -146,7 +148,7 @@ public void remove(@PathVariable Long id){}
 
 映射`Http`的`PATCH`方法，更新部分信息。
 
-```java
+``` java
 @PatchMapping
 public void patch(@PathVariable Long id , @RequestBody Person person){}
 
@@ -156,7 +158,7 @@ public void patch(@PathVariable Long id , @RequestBody Person person){}
 
 用来处理跨控制器的统一处理，如：异常处理(`ExceptionHandler`)，数据转换(`@InitBinder`)等，它组合了一个`@Component`注解，所以不用再手工注册bean。
 
-```java
+``` java
 @ControllerAdvice
 public class WiselyControllerAdvice {}
 
@@ -166,7 +168,7 @@ public class WiselyControllerAdvice {}
 
 针对控制器的全局异常处理。
 
-```java
+``` java
 @ControllerAdvice
 public class WiselyControllerAdvice {
 
@@ -187,7 +189,7 @@ public class WiselyControllerAdvice {
 
 控制器中的演示：
 
-```java
+``` java
 @GetMapping("/exception")
 public void exception() throws Exception {
     throw new Exception();
@@ -204,7 +206,7 @@ public void ioException() throws IOException {
 
 将制定格式的字符串专程对象，如将`2-wyf`(id-name),转换成dog对象。
 
-```java
+``` java
 @ControllerAdvice
 public class WiselyControllerAdvice {
 
@@ -220,7 +222,7 @@ public class WiselyControllerAdvice {
 
 自定义的属性编辑器:
 
-```java
+``` java
 public class DogPropertiesEditor extends PropertyEditorSupport {
 
     @Override
@@ -236,7 +238,7 @@ public class DogPropertiesEditor extends PropertyEditorSupport {
 
 演示控制器：
 
-```java
+``` java
 @GetMapping("/binder/{dog-txt}")
 public void binder(@PathVariable("dog-txt") Dog dog) {
     log.info("--------" + dog + "--------");
@@ -250,7 +252,7 @@ public void binder(@PathVariable("dog-txt") Dog dog) {
 
 定制Http的Reponse的状态：
 
-```java
+``` java
 @GetMapping("/showHttpStatus")
 @ResponseStatus(HttpStatus.ALREADY_REPORTED)
 public void showHttpStatus(){}
@@ -261,7 +263,7 @@ public void showHttpStatus(){}
 
 在不同的域下的网页用脚本调用接口的时候存在这跨域的问题，可以用当前注解来允许可以跨域的域。
 
-```java
+``` java
 @GetMapping("/{id}/cross")
 @CrossOrigin({"*"})
 public void crossGet(@PathVariable Long id){}
@@ -271,7 +273,7 @@ public void crossGet(@PathVariable Long id){}
 
 从参数重获取上传的文件：
 
-```java
+``` java
 @PostMapping("/upload")
 public void upload(@RequestPart("file") MultipartFile image){
     log.info("--------" + image.getOriginalFilename() + "--------");
